@@ -16,7 +16,7 @@ This project uses `astroNN`_ and `MyGaiaDB`_ to manage `APOGEE` and `Gaia` data 
 .. _astroNN: https://github.com/henrysky/astroNN
 .. _MyGaiaDB: https://github.com/henrysky/MyGaiaDB
 
-Important⚠️: If you are using `astroNN` in the data reduction process which we did here, you have to set `magicnumber = nan` in astroNN configuration file for the code here to work properly.
+Important⚠️: If you are using ``astroNN`` in the data reduction process which we did here, you have to set ``magicnumber = nan`` in astroNN configuration file for the code here to work properly.
 
 Jupyter Notebooks
 --------------------------------------------------------
@@ -69,6 +69,8 @@ Graphics
 
 .. _model_overview.drawio: model_overview.drawio
 .. _model_specs.drawio: model_specs.drawio
+.. _draw.io: https://draw.io/
+.. _flaticon.com: https://flaticon.com/
 
 Example of Basic Usage
 ============================
@@ -98,7 +100,7 @@ Even our model has a context window of 64 tokens, you do not need to fill up the
     nn_model = StellarPerceptron.load("./model_torch/", device="cpu")
     # give context of two stars
     # [[star1 teff, star1 logg], [star2 teff, star2 logg]]
-    nn_model.perceive([[4700., 2.5], [5500, 4.6]], ["teff", "logg"])
+    nn_model.perceive([[4700., 2.5], [5500, 4.2]], ["teff", "logg"])
     # request for information for them
     print(nn_model.request(["teff"]))
 
