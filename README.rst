@@ -67,6 +67,8 @@ Graphics
     | Source for Figure 2 in the paper.
     | Can be opened and edited by `draw.io`_
 
+.. _model_overview.drawio: model_overview.drawio
+.. _model_specs.drawio: model_specs.drawio
 
 Example of Basic Usage
 ============================
@@ -76,44 +78,45 @@ Here are some examples of basic usage of the model. For the codes to work, you n
 Get a list of vocabulary understood by the Model
 --------------------------------------------------------
 
-```python
-from stellarperceptron.model import StellarPerceptron
+.. code-block:: python
 
-nn_model = StellarPerceptron.load("./model_torch/", device="cpu")
-print(nn_model.vocabs)
-```
+    from stellarperceptron.model import StellarPerceptron
+
+    nn_model = StellarPerceptron.load("./model_torch/", device="cpu")
+    print(nn_model.vocabs)
+
 
 Give context of a star and request for information
 --------------------------------------------------------
 
 Even our model has a context window of 64 tokens, you do not need to fill up the whole length.
 
-```python
-from stellarperceptron.model import StellarPerceptron
+.. code-block:: python
+    
+    from stellarperceptron.model import StellarPerceptron
 
-nn_model = StellarPerceptron.load("./model_torch/", device="cpu")
-# give context of two stars
-# [[star1 teff, star1 logg], [star2 teff, star2 logg]]
-nn_model.perceive([[4700., 2.5], [5500, 4.6]], ["teff", "logg"])
-# request for information for them
-print(nn_model.request(["teff"]))
-```
+    nn_model = StellarPerceptron.load("./model_torch/", device="cpu")
+    # give context of two stars
+    # [[star1 teff, star1 logg], [star2 teff, star2 logg]]
+    nn_model.perceive([[4700., 2.5], [5500, 4.6]], ["teff", "logg"])
+    # request for information for them
+    print(nn_model.request(["teff"]))
 
 Get an arbitrary Gaia XP spectra with source_id online and request for information
 ------------------------------------------------------------------------------------------
 
-```python
-from utils.gaia_utils import xp_spec_online
+.. code-block:: python
 
-# Gaia DR3 source_id as integer
-gdr3_source_id = 2130706307446806144
+    from utils.gaia_utils import xp_spec_online
 
-bprp_coeffs = xp_spec_online(gdr3_source_id, absolute_flux=False)
-# Give the context of a star by giving XP coefficients to the NN model
-nn_model.perceive(np.concatenate([bprp_coeffs["bp"][:32], bprp_coeffs["rp"][:32]]), [*[f"bp{i}" for i in range(32)], *[f"rp{i}" for i in range(32)]])
-# Request for information like teff, logg, m_h
-print(nn_model.request(["teff", "logg", "m_h"]))
-```
+    # Gaia DR3 source_id as integer
+    gdr3_source_id = 2130706307446806144
+
+    bprp_coeffs = xp_spec_online(gdr3_source_id, absolute_flux=False)
+    # Give the context of a star by giving XP coefficients to the NN model
+    nn_model.perceive(np.concatenate([bprp_coeffs["bp"][:32], bprp_coeffs["rp"][:32]]), [*[f"bp{i}" for i in range(32)], *[f"rp{i}" for i in range(32)]])
+    # Request for information like teff, logg, m_h
+    print(nn_model.request(["teff", "logg", "m_h"]))
 
 Authors
 ===========
