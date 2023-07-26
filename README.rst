@@ -65,7 +65,7 @@ Graphics
     | This figure was made with icons created by the users ``imaginationlol`` and ``monkik`` on `flaticon.com`_.
 -   | `model_specs.drawio`_
     | Source for Figure 2 in the paper.
-    | Can be opened and edited by `draw.io`_
+    | Can be opened and edited by `draw.io`_.
 
 .. _model_overview.drawio: model_overview.drawio
 .. _model_specs.drawio: model_specs.drawio
@@ -109,16 +109,40 @@ Get an arbitrary Gaia XP spectra with source_id online and request for informati
 
 .. code-block:: python
 
+    import numpy as np
     from utils.gaia_utils import xp_spec_online
+    from stellarperceptron.model import StellarPerceptron
 
     # Gaia DR3 source_id as integer
     gdr3_source_id = 2130706307446806144
 
     bprp_coeffs = xp_spec_online(gdr3_source_id, absolute_flux=False)
+    nn_model = StellarPerceptron.load("./model_torch/", device="cpu")
     # Give the context of a star by giving XP coefficients to the NN model
     nn_model.perceive(np.concatenate([bprp_coeffs["bp"][:32], bprp_coeffs["rp"][:32]]), [*[f"bp{i}" for i in range(32)], *[f"rp{i}" for i in range(32)]])
     # Request for information like teff, logg, m_h
     print(nn_model.request(["teff", "logg", "m_h"]))
+
+Plot XP spectrum from stellar parameters
+------------------------------------------------------------------------------------------
+
+.. code-block:: python
+
+    import pylab as plt
+    from stellarperceptron.model import StellarPerceptron
+    from utils.gaia_utils import nn_xp_coeffs_phys, xp_sampling_grid
+
+    nn_model = StellarPerceptron.load("./model_torch/", device="cpu")
+    # to generate a spectrum from stellar parameters
+    # absolute_flux boolean flag if you want to get spectra in flux at 10 parsec or flux normalized by overall G-band flux
+    # other keywords are not mandatory, but you can specify them if you want to as long as they are in the vocabs
+    spectrum = nn_xp_coeffs_phys(nn_model, absolute_flux=True, teff=4700., logg=2.5, m_h=0.0, logebv=-7)
+
+    plt.plot(xp_sampling_grid, spectrum)
+    plt.xlabel("Wavelength ($nm$)")
+    plt.ylabel("Flux at 10 pc ($W nm^{-1} m^{-2}$)")
+    plt.xlim(392, 992)
+    plt.show()
 
 Authors
 ===========
