@@ -11,19 +11,32 @@ This repository is to make sure all figures and results are reproducible by anyo
 If Github has issue (or too slow) to load the Jupyter Notebooks, you can go
 http://nbviewer.jupyter.org/github/henrysky/astroNN_stars_foundation/tree/main/
 
-This project uses `astroNN`_ and `MyGaiaDB`_ to manage `APOGEE` and `Gaia` data respectively, `PyTorch`_ as the deep learning framework.
+Dependencies
+----------------
+
+This project uses `astroNN`_ and `MyGaiaDB`_ to manage `APOGEE`_ and `Gaia`_ data respectively, `PyTorch`_ as the deep learning framework. 
+`mwdust`_ and `extinction`_ are used to calculate extinctions. `XGBoost`_ as a baseline machine learning method for comparison.
 
 .. _astroNN: https://github.com/henrysky/astroNN
 .. _MyGaiaDB: https://github.com/henrysky/MyGaiaDB
+.. _APOGEE: https://www.sdss4.org/dr17/irspec/
+.. _Gaia: https://www.cosmos.esa.int/web/gaia/dr3
+.. _mwdust: https://github.com/jobovy/mwdust
+.. _extinction: https://github.com/kbarbary/extinction
+.. _XGBoost: https://github.com/dmlc/xgboost
 
-Important⚠️: If you are using ``astroNN`` in the data reduction process which we did here, you have to set ``magicnumber = nan`` in astroNN configuration file for the code here to work properly.
+..
+
+    ⚠️ If you are using ``astroNN`` in the data reduction process which we did here, you have to set ``magicnumber = nan`` in astroNN `configuration file`_ for the code here to work properly.
+
+.. _configuration file: https://astronn.readthedocs.io/en/latest/quick_start.html#configuration-file
 
 Jupyter Notebooks
 --------------------------------------------------------
 
 -   | `Dataset_Reduction.ipynb`_
     | The notebook contains code to generate the dataset used by this paper. 
-    | ⚠️Multi-terabytes of (mostly gaia) data need to be downloaded in the process.
+    | Terabytes of (mostly gaia) data need to be downloaded in the process to construct the datasets.
 -   | `Inference_Spec2Labels.ipynb`_
     | The notebook contains code to do inference on tasks of stellar spectra to stellar parameters.
 -   | `Inference_Labels2Spec.ipynb`_
@@ -42,18 +55,20 @@ Jupyter Notebooks
 Python Script
 --------------------------------------------------------
 
+If you use this training script to train your own model, please notice that details of your system will be 
+saved in the model file as ``training_system_info.txt`` for developers to debug. Delete the file before
+you share your model with others if you concern about privacy. 
+
 -   | `training.py`_
     | Python script to train the model.
 
 .. _training.py: training.py
-
 
 Model
 --------------------------------------------------------
 
 -   | ``model_torch`` is a trained `PyTorch`_ model
     | The model has ~8.8 millions parameters trained on ~16 millions "non-linear" tokens from ~397k stars with 118 unque "unit vector" tokens.
-    | The model is trained with `PyTorch`_ 2.1 mixed precision on a consumer NVIDIA GTX 4070 Ti for ~22.5 hours with ~ 12 GB of GPU memory requirement on a Windows 11 x64 desktop computer.
 
 .. _PyTorch: https://pytorch.org/
 
@@ -91,7 +106,7 @@ Get a list of vocabulary understood by the Model
 Give context of a star and request for information
 --------------------------------------------------------
 
-Even our model has a context window of 64 tokens, you do not need to fill up the whole length.
+Althought our model has a context window of 64 tokens, you do not need to fill up the whole context window.
 
 .. code-block:: python
     
@@ -104,7 +119,7 @@ Even our model has a context window of 64 tokens, you do not need to fill up the
     # request for information for them
     print(nn_model.request(["teff"]))
 
-Get an arbitrary Gaia XP spectra with source_id online and request for information
+Get an arbitrary Gaia XP spectrum with source_id online and request for information
 ------------------------------------------------------------------------------------------
 
 .. code-block:: python

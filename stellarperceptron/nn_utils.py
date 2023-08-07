@@ -90,15 +90,8 @@ class TrainingGenerator(torch.utils.data.Dataset):
             self.input = np.take_along_axis(self.input, partialsort_idx, axis=1)
             self.input_idx = np.take_along_axis(self.input_idx, partialsort_idx, axis=1)
             self.first_n_shuffle = self.data_width - np.sum(self.input_idx == 0, axis=1)
-
         else:
             self.first_n_shuffle = None
-
-        # ================ temperory ================
-        # prob_matrix[24, :] = 30
-        # prob_matrix[25, :] = 30
-        # prob_matrix[26, :] = 30
-        # ================ temperory ================
 
         prob_matrix[
             bad_idx

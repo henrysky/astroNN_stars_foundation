@@ -394,9 +394,6 @@ class StellarPerceptronTorchModel(nn.Module):
             input_token_tensor, torch.zeros_like(input_token_tensor)
         )
         perception = self.torch_encoder(input_embedded, mask=padding_mask)
-        with torch.no_grad():  # prevent gradients flow from decoder back to embedding via request vector
-            # TODO: I have removed it
-            output_embedding_nograd = output_embedding * 1.0
         output_tensor = self.torch_decoder(
             output_embedding,
             perception,

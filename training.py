@@ -27,7 +27,7 @@ checkpoint_every_n_epochs = 128  # save a checkpoint every n epochs
 save_model_to_folder = "./model_torch/"  # folder to save the model
 # ================== training-related settings ==================
 
-# load APOGEE allstar file and Gaia XP
+# load training data
 xp_apogee = h5py.File("./data_files/training_set.h5", mode="r")
 xp_relavancy = xp_apogee["raw"]["xp_relevancy"][()]
 xp_coeffs_gnorm = xp_apogee["raw"]["xp_coeffs_gnorm"][()]

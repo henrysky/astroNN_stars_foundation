@@ -465,6 +465,10 @@ class StellarPerceptron(StellarPerceptronCore):
                     attention_scores = np.where(np.tile(np.atleast_3d(_last_padding_mask), (1, 1, self.context_length)), 0, last_attention_scores[:, : self.context_length, : self.context_length])
             else:
                 # TODO: need to handle attention score in this case
+                if return_attention_scores:
+                    raise NotImplementedError(
+                        "return_attention_scores not implemented for batched inputs yet"
+                    )
                 with torch.autocast(
                     device_type=self.device_type,
                     dtype=torch.float16,
