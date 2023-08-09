@@ -95,7 +95,14 @@ class StellarPerceptronCore(ABC):
         if "torch" in backend_framewoark:
             self.device = device
             self.dtype = dtype
-            self.mixed_precision = mixed_precision
+            if "cpu" in self.device:
+                if mixed_precision:
+                    warnings.warn("Mixed precision is not supported on CPU")
+                    self.mixed_precision = False
+                else:
+                    self.mixed_precision = mixed_precision
+            else:
+                self.mixed_precision = mixed_precision
 
         self.root_folder = os.path.abspath(folder)
         # prevent any overwriting to exisitng model folder
@@ -513,6 +520,7 @@ class StellarPerceptronCore(ABC):
             decoder_dropout_rate=config["nn_config"]["decoder_dropout_rate"],
             decoder_activation=config["nn_config"]["decoder_activation"],
             device=device,
+            mixed_precision=mixed_precision,
             folder=folder_name,
             built=True,
         )

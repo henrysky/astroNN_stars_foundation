@@ -336,7 +336,6 @@ class StellarPerceptron(StellarPerceptronCore):
                     self.optimizer.zero_grad()
                     with torch.autocast(
                         device_type=self.device_type,
-                        dtype=torch.float16,
                         enabled=self.mixed_precision,
                     ):
                         outputs, outputs_logvar = self.torch_model(
@@ -471,7 +470,6 @@ class StellarPerceptron(StellarPerceptronCore):
                     )
                 with torch.autocast(
                     device_type=self.device_type,
-                    dtype=torch.float16,
                     enabled=self.mixed_precision,
                 ):
                     perception = [
@@ -560,7 +558,6 @@ class StellarPerceptron(StellarPerceptronCore):
                     for i in range(num_batch):
                         with torch.autocast(
                             device_type=self.device_type,
-                            dtype=torch.float16,
                             enabled=self.mixed_precision,
                         ):
                             _pred, _pred_logvar = self.torch_decoder(
