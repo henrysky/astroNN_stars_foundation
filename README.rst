@@ -90,7 +90,7 @@ Graphics
 Example of Basic Usage
 ============================
 
-Here are some examples of basic usage of the model. For the codes to work, you need to execute them at the root directory of this repository.
+Here are some examples of basic usage of the model using Python. For the codes to work, you need to execute them at the root directory of this repository.
 
 Get a list of vocabulary understood by the Model
 --------------------------------------------------------

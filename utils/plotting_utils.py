@@ -170,7 +170,7 @@ def plot_kiel_uncertainty(
             top_cbar(ax3, mappable, "$\sigma_\mathrm{model}$ (dex)", labelpad=10)
 
     if suptitle is not None:
-        fig.suptitle(suptitle, fontsize=22, y=1.0)
+        fig.suptitle(suptitle, x=0.04, y=1.05, ha="left")
 
 
 def setup_xp_physical_plot(
@@ -198,7 +198,7 @@ def setup_xp_physical_plot(
 
     ax.set_xlabel("Wavelength ($nm$)")
     scale_text = "" if logscale == 0 else f"10^{{{logscale}}} "
-    ax.set_ylabel(f"Flux at $10pc$ (${scale_text} W nm^{{{-1}}} m^{{{-2}}}$)")
+    ax.set_ylabel(f"Flux at 10 $pc$ (${scale_text} W nm^{{{-1}}} m^{{{-2}}}$)")
     ax.set_xlim(392, 992)
 
     if lines_list:

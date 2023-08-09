@@ -29,15 +29,15 @@ save_model_to_folder = "./model_torch/"  # folder to save the model
 
 # load training data
 xp_apogee = h5py.File("./data_files/training_set.h5", mode="r")
-xp_relavancy = xp_apogee["raw"]["xp_relevancy"][()]
+xp_relevancy = xp_apogee["raw"]["xp_relevancy"][()]
 xp_coeffs_gnorm = xp_apogee["raw"]["xp_coeffs_gnorm"][()]
 xp_coeffs_err_gnorm = xp_apogee["raw"]["xp_coeffs_gnorm_err"][()]
 
 # propagate to deal with 53, 54, 108, 109 NaN issues
-xp_relavancy[:, 52:55] = xp_relavancy[:, 51:52]
-xp_relavancy[:, 107:110] = xp_relavancy[:, 106:107]
-xp_coeffs_gnorm[~xp_relavancy] = np.nan
-xp_coeffs_err_gnorm[~xp_relavancy] = np.nan
+xp_relevancy[:, 52:55] = xp_relevancy[:, 51:52]
+xp_relevancy[:, 107:110] = xp_relevancy[:, 106:107]
+xp_coeffs_gnorm[~xp_relevancy] = np.nan
+xp_coeffs_err_gnorm[~xp_relevancy] = np.nan
 
 training_labels = np.column_stack(
     [
