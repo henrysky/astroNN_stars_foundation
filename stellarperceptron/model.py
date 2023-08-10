@@ -434,9 +434,9 @@ class StellarPerceptron(StellarPerceptronCore):
         training_log_f.close()
         training_csv_metrics_f.close()
 
-    def _perceive_internal(self, inputs, inputs_token, batch_size, return_attention_scores=False):
+    def _perceive_internal(self, inputs, inputs_token, batch_size, return_attention_scores=False, inference_mode=True):
         self.torch_model.eval()
-        with torch.inference_mode():
+        with torch.inference_mode(mode=inference_mode):
             inputs_token = torch.as_tensor(
                 inputs_token, device=self.factory_kwargs["device"], dtype=torch.int32
             )

@@ -545,6 +545,7 @@ class StellarPerceptronCore(ABC):
         inputs_token: List[Union[int, str]],
         batch_size: int = 1024,
         return_attention_scores: bool = False,
+        inference_mode: bool = True,
     ) -> None:
         """
         This function to initiate perception of stars in the model
@@ -558,6 +559,10 @@ class StellarPerceptronCore(ABC):
             Tokens or names of input data.
         batch_size: int, optional
             The batch size for neural network. Default is 1024.
+        return_attention_scores: bool, optional
+            Whether to return attention scores. Default is False.
+        inference_mode: bool, optional
+            Whether to set the model to inference mode to save memory. Default is True. Set it to False if you want gradient to flow for example.
 
         Returns
         -------
@@ -578,7 +583,7 @@ class StellarPerceptronCore(ABC):
         self._last_padding_mask = inputs_token == 0
 
         self._perception_memory, attention_scores = self._perceive_internal(
-            inputs, inputs_token, batch_size=batch_size, return_attention_scores=return_attention_scores,
+            inputs, inputs_token, batch_size=batch_size, return_attention_scores=return_attention_scores, inference_mode=inference_mode
         )
         if return_attention_scores:
             return attention_scores
