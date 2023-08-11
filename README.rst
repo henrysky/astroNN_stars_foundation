@@ -45,12 +45,16 @@ Jupyter Notebooks
     | The notebook contains code to do inference on tasks of stellar spectra to stellar spectra.
 -   | `Inference_Labels2Labels.ipynb`_
     | The notebook contains code to do inference on tasks of stellar parameters to stellar parameters.
+-   | `Task_TopKSearch.ipynb`_
+    | The notebook contains code for an example of how our model can act as a Foundation model.
+    | Our trained model will be fine-tuned with contrastive objective to do a stars similarity searching task.
 
 .. _Dataset_Reduction.ipynb: Dataset_Reduction.ipynb
 .. _Inference_Spec2Labels.ipynb: Inference_Spec2Labels.ipynb
 .. _Inference_Labels2Spec.ipynb: Inference_Labels2Spec.ipynb
 .. _Inference_Spec2Spec.ipynb: Inference_Spec2Spec.ipynb
 .. _Inference_Labels2Labels.ipynb: Inference_Labels2Labels.ipynb
+.. _Task_TopKSearch.ipynb: Task_TopKSearch.ipynb
 
 Python Script
 --------------------------------------------------------
@@ -64,26 +68,31 @@ you share your model with others if you concern about privacy.
 
 .. _training.py: training.py
 
-Model
+Models
 --------------------------------------------------------
 
 -   | ``model_torch`` is a trained `PyTorch`_ model
     | The model has ~8.8 millions parameters trained on ~16 millions "non-linear" tokens from ~397k stars with 118 unque "unit vector" tokens.
+-   | ``model_torch_search`` is a trained `PyTorch`_ model
+    | The model is fine-tuned on the main model to do a stars similarity searching task between spectra and parameters as a demonstration of how our model can act as a Foundation model.
 
 .. _PyTorch: https://pytorch.org/
 
 Graphics 
 --------------------------------------------------------
 
+All these graphics can be opened and edited by `draw.io`_.
+
 -   | `model_overview.drawio`_
-    | Source for Figure 1 in the paper, can be opened and edited by `draw.io`_.
-    | This figure was made with icons created by the users ``imaginationlol`` and ``monkik`` on `flaticon.com`_.
+    | Source for Figure 1 in the paper, 
 -   | `model_specs.drawio`_
     | Source for Figure 2 in the paper.
-    | Can be opened and edited by `draw.io`_.
+-   | `model_foundation_showcase.drawio`_
+    | Source for Figure 18 in the paper.
 
 .. _model_overview.drawio: model_overview.drawio
 .. _model_specs.drawio: model_specs.drawio
+.. _model_foundation_showcase.drawio: model_foundation_showcase.drawio
 .. _draw.io: https://draw.io/
 .. _flaticon.com: https://flaticon.com/
 
