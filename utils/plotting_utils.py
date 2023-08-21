@@ -196,9 +196,9 @@ def setup_xp_physical_plot(
     sm = plt.cm.ScalarMappable(cmap=cmap, norm=norm)
     top_cbar(ax, sm, cbar_title)
 
-    ax.set_xlabel("Wavelength ($nm$)")
+    ax.set_xlabel("Wavelength (nm)")
     scale_text = "" if logscale == 0 else f"10^{{{logscale}}} "
-    ax.set_ylabel(f"Flux at 10 $pc$ (${scale_text} W nm^{{{-1}}} m^{{{-2}}}$)")
+    ax.set_ylabel(f"Flux at 10 pc (${scale_text} \mathrm{{W}} \mathrm{{nm}}^{{{-1}}} \mathrm{{m}}^{{{-2}}}$)")
     ax.set_xlim(392, 992)
 
     if lines_list:

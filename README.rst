@@ -1,7 +1,20 @@
 Abstract
 ===========
 
-[to be written]
+Rapid strides are currently being made in the field of artificial intelligence using Transformer-based models like Large Language Models (LLMs). 
+Aside from some use of the basic technical components of Transformers---the attention mechanism---their real potential for creating a single, 
+large, versatile model in astronomy has not yet been explored. In this work, we introduce a novel perspective on the role of such model in 
+data-driven astronomy by proposing a framework for astronomical data that use the same core techniques and architecture as used by 
+natural-language LLMs. Using a variety of observations and labels of stars as an example, we build a prototype of a Transformer-based model and 
+we show that this model can be trained in a self-supervised manner with cross-survey astronomical data sets such as APOGEE and Gaia to perform 
+a variety of inference tasks. In particular, we demonstrate that a *single* model has the ability to perform both discriminative and 
+generative tasks even if the model was not trained or fine-tuned to do any specific task that we test it. For example on the discriminative 
+task of deriving stellar parameters from Gaia XP spectra, we achieve an accuracy of 47 K in Teff, 0.11 dex in log(g), and 0.07 dex in [M/H], 
+outperforming an expert ``XGBoost`` model in the same setting. But the same model can also generate Gaia XP spectra from given stellar 
+parameters, inpaint unobserved spectral regions, extract empirical stellar loci, and even determine the interstellar extinction curve. Our 
+framework demonstrates that the possibility of building and training a *single* foundation model without fine-tuning using data and 
+parameters from multiple surveys to predict unmeasured observations and parameters is well within reach. Such 'Large Astronomy Models'
+trained on large quantities of observational data will play a large role in the analysis of current and future large surveys.
 
 Getting Started
 ================
@@ -27,7 +40,12 @@ This project uses `astroNN`_ and `MyGaiaDB`_ to manage `APOGEE`_ and `Gaia`_ dat
 
 ..
 
-    ⚠️ If you are using ``astroNN`` in the data reduction process which we did here, you have to set ``magicnumber = nan`` in astroNN `configuration file`_ for the code here to work properly.
+    ⚠️ You have to set ``magicnumber = nan`` in ``astroNN`` `configuration file`_ for the data reduction code to work properly.
+
+..
+
+    ⚠️ Using ``mps`` backend of ``PyTorch`` on Apple device is known to yield incorrect results. Please use ``cuda`` or ``cpu`` as backend.
+
 
 .. _configuration file: https://astronn.readthedocs.io/en/latest/quick_start.html#configuration-file
 
