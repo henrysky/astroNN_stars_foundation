@@ -1,20 +1,23 @@
 Abstract
 ===========
 
-Rapid strides are currently being made in the field of artificial intelligence using Transformer-based models like Large Language Models (LLMs). 
-Aside from some use of the basic technical components of Transformers---the attention mechanism---their real potential for creating a single, 
-large, versatile model in astronomy has not yet been explored. In this work, we introduce a novel perspective on the role of such model in 
-data-driven astronomy by proposing a framework for astronomical data that use the same core techniques and architecture as used by 
-natural-language LLMs. Using a variety of observations and labels of stars as an example, we build a prototype of a Transformer-based model and 
-we show that this model can be trained in a self-supervised manner with cross-survey astronomical data sets such as APOGEE and Gaia to perform 
-a variety of inference tasks. In particular, we demonstrate that a *single* model has the ability to perform both discriminative and 
-generative tasks even if the model was not trained or fine-tuned to do any specific task that we test it. For example on the discriminative 
-task of deriving stellar parameters from Gaia XP spectra, we achieve an accuracy of 47 K in Teff, 0.11 dex in log(g), and 0.07 dex in [M/H], 
-outperforming an expert ``XGBoost`` model in the same setting. But the same model can also generate Gaia XP spectra from given stellar 
-parameters, inpaint unobserved spectral regions, extract empirical stellar loci, and even determine the interstellar extinction curve. Our 
-framework demonstrates that the possibility of building and training a *single* foundation model without fine-tuning using data and 
-parameters from multiple surveys to predict unmeasured observations and parameters is well within reach. Such 'Large Astronomy Models'
-trained on large quantities of observational data will play a large role in the analysis of current and future large surveys.
+Rapid strides are currently being made in the field of 🤖artificial intelligence🧠 using Transformer-based models like Large Language Models (LLMs). 
+The potential of these methods for creating a single, large, versatile model in astronomy has not yet been explored. In this work, we propose a 
+framework for data-driven astronomy that uses the same core techniques and architecture as used by LLMs. Using a variety of observations and labels 
+of stars as an example, we build a Transformer-based model and train it in a self-supervised manner with cross-survey data sets to perform a variety 
+of inference tasks. In particular, we demonstrate that a *single* model can perform both discriminative and generative tasks even if the 
+model was not trained or fine-tuned to do any specific task. For example, on the discriminative task of deriving stellar parameters from Gaia 
+XP spectra, we achieve an accuracy of 47 K in T_eff, 0.11 dex in log(g), and 0.07 dex in [M/H], outperforming an expert ``XGBoost`` model in the 
+same setting. But the same model can also generate XP spectra from stellar parameters, inpaint unobserved spectral regions, extract empirical stellar 
+loci, and even determine the interstellar extinction curve. Our framework demonstrates that building and training a *single* foundation model 
+without fine-tuning using data and parameters from multiple surveys to predict unmeasured observations and parameters is well within reach. Such 
+'Large Astronomy Models' trained on large quantities of observational data will play a large role in the analysis of current and future large surveys.
+
+.. raw:: html
+
+   <p align="center">
+     <img width="1000" src="model_overview.png">
+   </p>
 
 Getting Started
 ================
@@ -28,7 +31,7 @@ Dependencies
 ----------------
 
 This project uses `astroNN`_ and `MyGaiaDB`_ to manage `APOGEE`_ and `Gaia`_ data respectively, `PyTorch`_ as the deep learning framework. 
-`mwdust`_ and `extinction`_ are used to calculate extinctions. `XGBoost`_ as a baseline machine learning method for comparison.
+`mwdust`_ and `extinction`_ are used to calculate extinctions. `gaiadr3_zeropoint`_ and `GaiaXPy`_ are used for `Gaia`_ data reduction. `XGBoost`_ as a baseline machine learning method for comparison.
 
 .. _astroNN: https://github.com/henrysky/astroNN
 .. _MyGaiaDB: https://github.com/henrysky/MyGaiaDB
@@ -37,6 +40,8 @@ This project uses `astroNN`_ and `MyGaiaDB`_ to manage `APOGEE`_ and `Gaia`_ dat
 .. _mwdust: https://github.com/jobovy/mwdust
 .. _extinction: https://github.com/kbarbary/extinction
 .. _XGBoost: https://github.com/dmlc/xgboost
+.. _gaiadr3_zeropoint: https://gitlab.com/icc-ub/public/gaiadr3_zeropoint
+.. _GaiaXPy: https://gaia-dpci.github.io/GaiaXPy-website/
 
 ..
 
@@ -90,7 +95,7 @@ Models
 --------------------------------------------------------
 
 -   | ``model_torch`` is a trained `PyTorch`_ model
-    | The model has ~8.8 millions parameters trained on ~16 millions "non-linear" tokens from ~397k stars with 118 unque "unit vector" tokens.
+    | The model has ~8.8 millions parameters trained on ~16 millions tokens from ~397k stars with 118 unque "unit vector" tokens.
 -   | ``model_torch_search`` is a trained `PyTorch`_ model
     | The model is fine-tuned on the main model to do a stars similarity searching task between spectra and parameters as a demonstration of how our model can act as a Foundation model.
 
@@ -106,7 +111,7 @@ All these graphics can be opened and edited by `draw.io`_.
 -   | `model_specs.drawio`_
     | Source for Figure 2 in the paper.
 -   | `model_foundation_showcase.drawio`_
-    | Source for Figure 18 in the paper.
+    | Source for Figure C1 in the paper.
 
 .. _model_overview.drawio: model_overview.drawio
 .. _model_specs.drawio: model_specs.drawio
@@ -114,7 +119,7 @@ All these graphics can be opened and edited by `draw.io`_.
 .. _draw.io: https://draw.io/
 .. _flaticon.com: https://flaticon.com/
 
-Example of Basic Usage
+Examples of Basic Usage
 ============================
 
 Here are some examples of basic usage of the model using Python. For the codes to work, you need to execute them at the root directory of this repository.
@@ -181,8 +186,8 @@ Plot XP spectrum from stellar parameters
     spectrum = nn_xp_coeffs_phys(nn_model, absolute_flux=True, teff=4700., logg=2.5, m_h=0.0, logebv=-7)
 
     plt.plot(xp_sampling_grid, spectrum)
-    plt.xlabel("Wavelength ($nm$)")
-    plt.ylabel("Flux at 10 pc ($W nm^{-1} m^{-2}$)")
+    plt.xlabel("Wavelength (nm)")
+    plt.ylabel("Flux at 10 pc ($ \mathrm{W} \mathrm{nm}^{-1} \mathrm{m}^{-2}$)")
     plt.xlim(392, 992)
     plt.show()
 
