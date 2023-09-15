@@ -83,8 +83,8 @@ Python Script
 --------------------------------------------------------
 
 If you use this training script to train your own model, please notice that details of your system will be 
-saved in the model file as ``training_system_info.txt`` for developers to debug. Delete the file before
-you share your model with others if you concern about privacy. 
+saved automatically in the model folder as ``training_system_info.txt`` for developers to debug should anything went wrong. 
+Delete the file before you share your model with others if you concern about privacy. 
 
 -   | `training.py`_
     | Python script to train the model.
@@ -138,7 +138,7 @@ Get a list of vocabulary understood by the Model
 Give context of a star and request for information
 --------------------------------------------------------
 
-Althought our model has a context window of 64 tokens, you do not need to fill up the whole context window.
+Although our model has a context window of 64 tokens, you do not need to fill up the whole context window.
 
 .. code-block:: python
     

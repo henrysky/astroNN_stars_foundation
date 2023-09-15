@@ -10,11 +10,11 @@ from astroNN.gaia import mag_to_absmag, fakemag_to_absmag
 from stellarperceptron.model import StellarPerceptron
 
 from mygaiadb.utils import radec_to_ecl
-from gaiaxpy.core.config import _load_xpmerge_from_xml, _load_xpsampling_from_xml
+from gaiaxpy.core.config import load_xpmerge_from_xml, load_xpsampling_from_xml
 
 zpt.load_tables()
-xp_sampling_grid, xp_merge = _load_xpmerge_from_xml()
-xp_design_matrices = _load_xpsampling_from_xml()
+xp_sampling_grid, xp_merge = load_xpmerge_from_xml()
+xp_design_matrices = load_xpsampling_from_xml()
 
 
 def mag_to_flux(mag, band="g"):
@@ -209,8 +209,6 @@ def xp_coeffs_phys(bprp_coeffs: dict) -> NDArray[np.float64]:
     """
     Turn the coefficients into physical spectra
     """
-    xp_design_matrices = _load_xpsampling_from_xml()
-    _, xp_merge = _load_xpmerge_from_xml()
     bp_spec = bprp_coeffs["bp"].dot(xp_design_matrices["bp"])
     rp_spec = bprp_coeffs["rp"].dot(xp_design_matrices["rp"])
     return np.add(
