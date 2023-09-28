@@ -31,7 +31,8 @@ Dependencies
 ----------------
 
 This project uses `astroNN`_ and `MyGaiaDB`_ to manage `APOGEE`_ and `Gaia`_ data respectively, `PyTorch`_ as the deep learning framework. 
-`mwdust`_ and `extinction`_ are used to calculate extinctions. `gaiadr3_zeropoint`_ and `GaiaXPy`_ are used for `Gaia`_ data reduction. `XGBoost`_ as a baseline machine learning method for comparison.
+`mwdust`_ and `extinction`_ are used to calculate extinctions. `gaiadr3_zeropoint`_ and `GaiaXPy`_ are used for `Gaia`_ data reduction. `XGBoost`_ as a 
+baseline machine learning method for comparison.
 
 .. _astroNN: https://github.com/henrysky/astroNN
 .. _MyGaiaDB: https://github.com/henrysky/MyGaiaDB
@@ -54,6 +55,18 @@ This project uses `astroNN`_ and `MyGaiaDB`_ to manage `APOGEE`_ and `Gaia`_ dat
 
 .. _configuration file: https://astronn.readthedocs.io/en/latest/quick_start.html#configuration-file
 
+Some notebooks require `Zhang et al. 2023`_ trained model to run as a comparison to our model. 
+You can download them from `here <https://doi.org/10.5281/zenodo.7692680>`__. You need to extract the model ``stellar_flux_model.tar.gz`` to the root directory of this 
+repository and rename the folder to ``zhanggreenrix2023_stellar_flux_model``. Their model requires `TensorFlow`_ to run.
+
+.. _Zhang et al. 2023: https://ui.adsabs.harvard.edu/abs/2023MNRAS.524.1855Z/abstract
+.. _TensorFlow: https://www.tensorflow.org/
+
+Some notebooks require `Andrae et al. 2023`_ Gaia DR3 "vetted" RGB catalog named ``table_2_catwise.fits.gz``. You can download them from `here <https://doi.org/10.5281/zenodo.7599788>`__. 
+You need to put the file(s) to a folder named ``andae2023_catalog`` at the root directory of this repository.
+
+.. _Andrae et al. 2023: https://ui.adsabs.harvard.edu/abs/2023MNRAS.524.1855Z/abstract
+
 Jupyter Notebooks
 --------------------------------------------------------
 
@@ -68,6 +81,8 @@ Jupyter Notebooks
     | The notebook contains code to do inference on tasks of stellar spectra to stellar spectra.
 -   | `Inference_Labels2Labels.ipynb`_
     | The notebook contains code to do inference on tasks of stellar parameters to stellar parameters.
+-   | `Inference_ExternalComparison.ipynb`_
+    | The notebook contains code to do inference on tasks of stellar parameters to stellar parameters compared to external catalog.
 -   | `Task_TopKSearch.ipynb`_
     | The notebook contains code for an example of how our model can act as a Foundation model.
     | Our trained model will be fine-tuned with contrastive objective to do a stars similarity searching task.
@@ -77,6 +92,7 @@ Jupyter Notebooks
 .. _Inference_Labels2Spec.ipynb: Inference_Labels2Spec.ipynb
 .. _Inference_Spec2Spec.ipynb: Inference_Spec2Spec.ipynb
 .. _Inference_Labels2Labels.ipynb: Inference_Labels2Labels.ipynb
+.. _Inference_ExternalComparison.ipynb: Inference_ExternalComparison.ipynb
 .. _Task_TopKSearch.ipynb: Task_TopKSearch.ipynb
 
 Python Script

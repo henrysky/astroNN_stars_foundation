@@ -1,5 +1,6 @@
 import copy
 import matplotlib
+import numpy as np
 import pylab as plt
 from astropy.stats import mad_std
 from mpl_toolkits.axes_grid1.axes_divider import make_axes_locatable
@@ -35,6 +36,7 @@ def plot_kiel_uncertainty(
     plot_topbar=True,
     density=False,
     fig=None,
+    show_percentiles=False,
 ):
     if fig is None:
         fig, (ax1, ax2, ax3) = plt.subplots(1, 3, figsize=figsize)
@@ -163,6 +165,40 @@ def plot_kiel_uncertainty(
         ha="left",
         va="top",
     )
+    if show_percentiles:
+        teff_err = val_labels_pd['teff'] - pred_df['teff']
+        ax1.annotate(
+            f"$16^\mathrm{{th}}$: {np.percentile(teff_err, 16):.2f} K\n" + 
+            f"$50^\mathrm{{th}}$: {np.percentile(teff_err, 50):.2f} K\n" +
+            f"$84^\mathrm{{th}}$: {np.percentile(teff_err, 84):.2f} K",
+            xy=(0.95, 0.05),
+            xycoords=ax1,
+            fontsize=14,
+            ha="right",
+            va="bottom",
+        )
+        logg_err = val_labels_pd['logg'] - pred_df['logg']
+        ax2.annotate(
+            f"$16^\mathrm{{th}}$: {np.percentile(logg_err, 16):.2f} dex\n" + 
+            f"$50^\mathrm{{th}}$: {np.percentile(logg_err, 50):.2f} dex\n" +
+            f"$84^\mathrm{{th}}$: {np.percentile(logg_err, 84):.2f} dex",
+            xy=(0.95, 0.05),
+            xycoords=ax2,
+            fontsize=14,
+            ha="right",
+            va="bottom",
+        )
+        m_h_err = val_labels_pd['m_h'] - pred_df['m_h']
+        ax3.annotate(
+            f"$16^\mathrm{{th}}$: {np.percentile(m_h_err, 16):.2f} dex\n" + 
+            f"$50^\mathrm{{th}}$: {np.percentile(m_h_err, 50):.2f} dex\n" +
+            f"$84^\mathrm{{th}}$: {np.percentile(m_h_err, 84):.2f} dex",
+            xy=(0.95, 0.05),
+            xycoords=ax3,
+            fontsize=14,
+            ha="right",
+            va="bottom",
+        )
     if plot_topbar:
         if density:
             top_cbar(ax3, mappable, "log$_{10}$ N", labelpad=10)
