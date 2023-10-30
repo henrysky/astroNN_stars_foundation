@@ -208,6 +208,8 @@ def plot_kiel_uncertainty(
     if suptitle is not None:
         fig.suptitle(suptitle, x=0.04, y=1.05, ha="left")
 
+    return ax1, ax2, ax3
+
 
 def setup_xp_physical_plot(
     ax,
