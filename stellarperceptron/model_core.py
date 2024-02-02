@@ -234,7 +234,7 @@ class StellarPerceptronCore(ABC):
         Core logic of tokenization, used by both tokenize() and tokenize_name().
         Only tokenize one string at a time
         """
-        if not one_str in self.vocabs:
+        if one_str not in self.vocabs:
             raise NameError(
                 f"'{one_str}' is not one of the vocabs the model know which is {self.vocabs}"
             )
@@ -507,7 +507,7 @@ class StellarPerceptronCore(ABC):
 
         nn = cls(
             vocabs=np.array(config["tokenizer_config"]["vocabs"]),
-            vocab_tokens=np.array(config["tokenizer_config"]["vocab_tokens"]),
+            vocab_tokens=config["tokenizer_config"]["vocab_tokens"],
             context_length=config["nn_config"]["context_length"],
             embedding_dim=config["nn_config"]["embedding_dim"],
             embedding_activation=config["nn_config"]["embedding_activation"],

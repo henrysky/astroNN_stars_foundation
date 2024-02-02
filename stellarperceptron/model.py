@@ -98,6 +98,9 @@ class StellarPerceptron(StellarPerceptronCore):
         # ====================== Model initialization ======================
 
     def _save_internal(self, folder_name: str):
+        if self.optimizer is None:
+            raise ValueError("Optimizer is not initialized, please (re)-train the model first")
+
         torch.save(
             {
                 "model_state_dict": self.torch_model.state_dict(),
