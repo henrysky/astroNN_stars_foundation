@@ -44,6 +44,10 @@ baseline machine learning method for comparison.
 .. _gaiadr3_zeropoint: https://gitlab.com/icc-ub/public/gaiadr3_zeropoint
 .. _GaiaXPy: https://gaia-dpci.github.io/GaiaXPy-website/
 
+Python dependencies are also listed in `requirements.txt`_.
+
+.. _requirements.txt: requirements.txt
+
 ..
 
     ⚠️ You have to set ``magicnumber = nan`` in ``astroNN`` `configuration file`_ for the data reduction code to work properly.
@@ -67,12 +71,51 @@ You need to put the file(s) to a folder named ``andae2023_catalog`` at the root 
 
 .. _Andrae et al. 2023: https://ui.adsabs.harvard.edu/abs/2023MNRAS.524.1855Z/abstract
 
+Datasets
+---------------
+You can compile the dataset by running the `Dataset_Reduction.ipynb`_ notebook.
+
+But you can skip the compilation step because the datasets are available on `Zenodo`_ and should be placed in the 
+folder named ``data_files`` under the root directory of this repository.
+
+If you are planning to use the Docker image, the data files are already downloaded and placed in the correct folder in the container.
+
+Docker Image
+----------------
+
+If you have `Docker`_ installed, you can use the `Dockerfile`_ to build a Docker image upon Pytorch container from `NVIDIA NGC Catalog`_ with all dependencies installed and data files downloaded.
+
+.. _NVIDIA NGC Catalog: https://catalog.ngc.nvidia.com/orgs/nvidia/containers/pytorch
+.. _Dockerfile: Dockerfile
+.. _Docker: https://www.docker.com/
+
+To build the Docker image called ``stars_foundation``, run the following command in the root directory of this repository:
+
+.. code-block:: bash
+
+    docker build -t stars_foundation .
+
+To run the Docker container with all GPU available to the container named ``testing123``, run the following command:
+
+.. code-block:: bash
+    
+    docker run --gpus all --name testing123 -it -e SHELL=/bin/bash --entrypoint bash stars_foundation
+
+Then you can attach to the container by running:
+
+.. code-block:: bash
+
+    docker exec -it testing123 bash
+
+Now you can run all notebooks or training script inside the container
+
 Jupyter Notebooks
 --------------------------------------------------------
 
 -   | `Dataset_Reduction.ipynb`_
     | The notebook contains code to generate the dataset used by this paper. 
     | Terabytes of (mostly gaia) data need to be downloaded in the process to construct the datasets.
+    | An alternative is to download the datasets from `Zenodo`_.
 -   | `Inference_Spec2Labels.ipynb`_
     | The notebook contains code to do inference on tasks of stellar spectra to stellar parameters.
 -   | `Inference_Labels2Spec.ipynb`_
@@ -94,6 +137,7 @@ Jupyter Notebooks
 .. _Inference_Labels2Labels.ipynb: Inference_Labels2Labels.ipynb
 .. _Inference_ExternalComparison.ipynb: Inference_ExternalComparison.ipynb
 .. _Task_TopKSearch.ipynb: Task_TopKSearch.ipynb
+.. _Zenodo: https://zenodo.org/records/12738256
 
 Python Script
 --------------------------------------------------------
