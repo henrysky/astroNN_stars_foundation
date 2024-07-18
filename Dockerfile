@@ -10,10 +10,14 @@ RUN cd install-tl-2*  && perl install-tl --no-interaction --scheme=small
 ENV PATH="/usr/local/texlive/2024/bin/x86_64-linux:${PATH}"
 RUN tlmgr install type1cm cm-super dvipng
 
+ENV MY_ASTRO_DATA=/astro_data
+ENV SDSS_LOCAL_SAS_MIRROR=$MY_ASTRO_DATA/sdss_mirror
+ENV GAIA_TOOLS_DATA=$MY_ASTRO_DATA/gaia_mirror
+ENV DUST_DIR=$MY_ASTRO_DATA/mwdust_mirror
+RUN mkdir $MY_ASTRO_DATA $SDSS_LOCAL_SAS_MIRROR $GAIA_TOOLS_DATA $DUST_DIR
 RUN git clone https://github.com/henrysky/astroNN_stars_foundation
 WORKDIR /workspace/astroNN_stars_foundation
-ENV MY_ASTRO_DATA=/
 RUN pip install -r requirements.txt
-RUN mkdir -p data_files figs
+RUN mkdir data_files figs
 RUN curl --cookie zenodo-cookies.txt "https://zenodo.org/records/12738256/files/testing_set.h5?download=1" --output data_files/testing_set.h5
 RUN curl --cookie zenodo-cookies.txt "https://zenodo.org/records/12738256/files/training_set.h5?download=1" --output data_files/training_set.h5

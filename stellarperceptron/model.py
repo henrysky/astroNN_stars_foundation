@@ -1,18 +1,17 @@
-import tqdm
-import torch
 import pathlib
-import numpy as np
+import subprocess
 from datetime import timedelta
+from typing import List, Optional
+
+import numpy as np
+import torch
+import tqdm
+from numpy.typing import NDArray
 from sklearn.model_selection import train_test_split
 
-from typing import List, Optional
-from numpy.typing import NDArray
-
-
-from .model_core import StellarPerceptronCore
 from .layers import NonLinearEmbedding, StellarPerceptronTorchModel
-from .nn_utils import TrainingGenerator, robust_mean_squared_error, mean_squared_error
-from .torch_utils_collect_env import get_torch_env_info
+from .model_core import StellarPerceptronCore
+from .nn_utils import TrainingGenerator, mean_squared_error, robust_mean_squared_error
 
 
 class StellarPerceptron(StellarPerceptronCore):
@@ -253,9 +252,15 @@ class StellarPerceptron(StellarPerceptronCore):
         training_csv_metrics_f = open(f"{self.root_folder}/training_metrics.csv", "w")
         training_csv_metrics_f.write("time,loss,mse_loss,val_loss,val_mse_loss,lr\n")
 
-        system_info_f = open(f"{self.root_folder}/training_system_info.log", "w")
-        system_info_f.write(get_torch_env_info())
-        system_info_f.close()
+        system_info_path = f"{self.root_folder}/training_system_info.log"
+        # check if the file exists
+        if not pathlib.Path(system_info_path).exists():
+            with open(f"{self.root_folder}/training_system_info.log", "w") as system_info_f:
+                system_info_f.write(
+                    subprocess.run(
+                        ["python", "-m", "torch.utils.collect_env"], stdout=subprocess.PIPE
+                    ).stdout.decode("utf-8")
+                )
 
         (
             standardized_inputs,
