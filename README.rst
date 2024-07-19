@@ -19,6 +19,9 @@ without fine-tuning using data and parameters from multiple surveys to predict u
      <img width="1000" src="model_overview.png">
    </p>
 
+.. contents:: **Table of Contents**
+    :depth: 3
+
 Getting Started
 ================
 
@@ -31,7 +34,7 @@ Dependencies
 ----------------
 
 This project uses `astroNN`_ and `MyGaiaDB`_ to manage `APOGEE`_ and `Gaia`_ data respectively, `PyTorch`_ as the deep learning framework. 
-`mwdust`_ and `extinction`_ are used to calculate extinctions. `gaiadr3_zeropoint`_ and `GaiaXPy>=2.1.0`_ are used for `Gaia`_ data reduction. `XGBoost>=2.0.1`_ as a 
+`mwdust`_ and `extinction`_ are used to calculate extinctions. `gaiadr3_zeropoint`_ and `GaiaXPy`_>=2.1.0 are used for `Gaia`_ data reduction. `XGBoost`_>=2.0.1 as a 
 baseline machine learning method for comparison.
 
 .. _astroNN: https://github.com/henrysky/astroNN
