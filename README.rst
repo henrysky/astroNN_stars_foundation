@@ -33,8 +33,8 @@ http://nbviewer.jupyter.org/github/henrysky/astroNN_stars_foundation/tree/main/
 Dependencies
 ----------------
 
-This project uses `astroNN`_ and `MyGaiaDB`_ to manage `APOGEE`_ and `Gaia`_ data respectively, `PyTorch`_ as the deep learning framework. 
-`mwdust`_ and `extinction`_ are used to calculate extinctions. `gaiadr3_zeropoint`_ and `GaiaXPy`_>=2.1.0 are used for `Gaia`_ data reduction. `XGBoost`_>=2.0.1 as a 
+This project uses `astroNN`_ and `MyGaiaDB`_ to manage `APOGEE`_ and `Gaia`_ data respectively, `PyTorch`_>=2.3 as the deep learning framework. 
+`mwdust`_ and `extinction`_ are used to calculate extinctions. `gaiadr3_zeropoint`_ and `GaiaXPy`_>=2.1 are used for `Gaia`_ data reduction. `XGBoost`_>=2.0.1 as a 
 baseline machine learning method for comparison.
 
 .. _astroNN: https://github.com/henrysky/astroNN

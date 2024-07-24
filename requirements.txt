@@ -3,7 +3,7 @@ astropy
 astroquery
 tqdm
 scikit-learn
-torch
+torch>=2.3
 matplotlib
 packaging
 pandas
@@ -15,6 +15,6 @@ ipython
 ipykernel
 xgboost
 astroNN
-GaiaXPy
+GaiaXPy>=2.1
 gaiadr3_zeropoint
 MyGaiaDB

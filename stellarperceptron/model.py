@@ -62,13 +62,12 @@ class StellarPerceptron(StellarPerceptronCore):
             built=built,
         )
         self.implemented_backend = "torch"
-        self.factory_kwargs = {
-            "device": device,
-            "dtype": dtype,
-        }  # PyTorch implementation only
-        self.device_type = "cpu"
+        self.device = device
+        self.dtype = dtype
         if "cuda" in self.device:
             self.device_type = "cuda"
+        else:
+            self.device_type = device
 
         self.embedding_layer = NonLinearEmbedding(
             input_dim=self.vocab_size + 1,  # plus 1 special padding token
@@ -96,6 +95,10 @@ class StellarPerceptron(StellarPerceptronCore):
         self.torch_decoder = self.torch_model.torch_decoder
         # ====================== Model initialization ======================
 
+    @property
+    def factory_kwargs(self) -> dict:
+        return {"device": self.device, "dtype": self.dtype}
+
     def _save_internal(self, folder_name: str):
         if self.optimizer is None:
             raise ValueError("Optimizer is not initialized, please (re)-train the model first")
@@ -113,7 +116,7 @@ class StellarPerceptron(StellarPerceptronCore):
     def _load_internal(self, folder_name: str, **kwargs):
         # need to deal with gpu or not
         map_location = kwargs.get("device", "cpu")
-        model_f = torch.load(f"{folder_name}/weights.pt", map_location=map_location)
+        model_f = torch.load(f"{folder_name}/weights.pt", map_location=map_location, weights_only=True)
         self.torch_model.load_state_dict(
             model_f["model_state_dict"],
             strict=True,
@@ -231,7 +234,7 @@ class StellarPerceptron(StellarPerceptronCore):
         terminate_on_nan: bool = True
     ) -> None:
         # always scale the gradients if using cuda
-        gradient_scaler = torch.cuda.amp.GradScaler(enabled=self.device_type == "cuda")
+        gradient_scaler = torch.GradScaler(device=self.device, enabled=self.device_type == "cuda")
         self.epochs = epochs
         if inputs_err is None:
             inputs_err = np.zeros_like(inputs)
