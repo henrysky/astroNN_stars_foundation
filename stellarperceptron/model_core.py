@@ -476,7 +476,13 @@ class StellarPerceptronCore(ABC):
             )
 
     @classmethod
-    def load(cls, folder_name: str, checkpoint_epoch: int = -1, mixed_precision: bool = False, device: str = "cpu"):
+    def load(
+        cls,
+        folder_name: str,
+        checkpoint_epoch: int = -1,
+        mixed_precision: bool = False,
+        device: str = "cpu",
+    ):
         """
         Backend framework independent loading
 
@@ -583,7 +589,11 @@ class StellarPerceptronCore(ABC):
         self._last_padding_mask = inputs_token == 0
 
         self._perception_memory, attention_scores = self._perceive_internal(
-            inputs, inputs_token, batch_size=batch_size, return_attention_scores=return_attention_scores, inference_mode=inference_mode
+            inputs,
+            inputs_token,
+            batch_size=batch_size,
+            return_attention_scores=return_attention_scores,
+            inference_mode=inference_mode,
         )
         if return_attention_scores:
             return attention_scores

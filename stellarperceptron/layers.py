@@ -31,7 +31,7 @@ def default_initialization(torch_layer: nn.Module):
     torch.nn.init.kaiming_uniform_(torch_layer.weight)
 
     fan_in, _ = torch.nn.init._calculate_fan_in_and_fan_out(torch_layer.weight)
-    bound = 1 / fan_in ** 0.5 if fan_in > 0 else 0
+    bound = 1 / fan_in**0.5 if fan_in > 0 else 0
     torch.nn.init.uniform_(torch_layer.bias, -bound, bound)
 
 
@@ -63,7 +63,6 @@ class NonLinearEmbedding(nn.Module):
         self.padding_idx = 0
 
         factory_kwargs = {"device": device, "dtype": dtype}
-
 
         self.embeddings = Parameter(
             torch.empty((self.input_dim, self.output_dim), **factory_kwargs)
@@ -103,6 +102,7 @@ class TransformerBlock(nn.Module):
     """
     Building block of Transformer
     """
+
     def __init__(
         self,
         head_num: int,
@@ -128,18 +128,10 @@ class TransformerBlock(nn.Module):
             add_bias_kv=True,
             **self.factory_kwargs,
         )
-        self.dense_1 = torch.nn.Linear(
-            embedding_dim, dense_num, **self.factory_kwargs
-        )
-        self.dense_2 = torch.nn.Linear(
-            dense_num, embedding_dim, **self.factory_kwargs
-        )
-        self.layernorm_1 = torch.nn.LayerNorm(
-            embedding_dim, **self.factory_kwargs
-        )
-        self.layernorm_2 = torch.nn.LayerNorm(
-            embedding_dim, **self.factory_kwargs
-        )
+        self.dense_1 = torch.nn.Linear(embedding_dim, dense_num, **self.factory_kwargs)
+        self.dense_2 = torch.nn.Linear(dense_num, embedding_dim, **self.factory_kwargs)
+        self.layernorm_1 = torch.nn.LayerNorm(embedding_dim, **self.factory_kwargs)
+        self.layernorm_2 = torch.nn.LayerNorm(embedding_dim, **self.factory_kwargs)
         self.dropout_1 = torch.nn.Dropout(dropout_rate)
         self.dropout_2 = torch.nn.Dropout(dropout_rate)
 
@@ -167,9 +159,7 @@ class TransformerBlock(nn.Module):
         dense_1 = self.activation_fn(self.dense_1(attention_out_dropped_norm))
         dense_2 = self.dense_2(dense_1)
         dense_output = self.dropout_2(dense_2)
-        dense_output_norm = self.layernorm_2(
-            attention_out_dropped_norm + dense_output
-        )
+        dense_output_norm = self.layernorm_2(attention_out_dropped_norm + dense_output)
         if self.return_attention_scores:
             return dense_output_norm, _attention_scores
         else:
@@ -215,9 +205,7 @@ class StellarPerceptronEncoder(nn.Module):
             **self.factory_kwargs,
         )
 
-    def forward(
-        self, inputs: torch.Tensor, mask: torch.Tensor = None
-    ) -> torch.Tensor:
+    def forward(self, inputs: torch.Tensor, mask: torch.Tensor = None) -> torch.Tensor:
         transformer_out_1 = self.encoder_transformer_block_1(
             input_query=inputs, input_value=inputs, input_key=inputs, mask=mask
         )
@@ -229,6 +217,7 @@ class StellarPerceptronEncoder(nn.Module):
         )
         self.last_attention_scores = attention_scores
         return transformer_out_2
+
 
 class StellarPerceptronDecoder(nn.Module):
     def __init__(

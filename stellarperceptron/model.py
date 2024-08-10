@@ -101,7 +101,9 @@ class StellarPerceptron(StellarPerceptronCore):
 
     def _save_internal(self, folder_name: str):
         if self.optimizer is None:
-            raise ValueError("Optimizer is not initialized, please (re)-train the model first")
+            raise ValueError(
+                "Optimizer is not initialized, please (re)-train the model first"
+            )
 
         torch.save(
             {
@@ -116,7 +118,9 @@ class StellarPerceptron(StellarPerceptronCore):
     def _load_internal(self, folder_name: str, **kwargs):
         # need to deal with gpu or not
         map_location = kwargs.get("device", "cpu")
-        model_f = torch.load(f"{folder_name}/weights.pt", map_location=map_location, weights_only=True)
+        model_f = torch.load(
+            f"{folder_name}/weights.pt", map_location=map_location, weights_only=True
+        )
         self.torch_model.load_state_dict(
             model_f["model_state_dict"],
             strict=True,
@@ -135,7 +139,7 @@ class StellarPerceptron(StellarPerceptronCore):
         params = sum([np.prod(p.size()) for p in model_parameters])
         return params
 
-    def export_onnx_model(self, folder: Optional[str]=None) -> None:
+    def export_onnx_model(self, folder: Optional[str] = None) -> None:
         """
         Function to convert the model to ONNX format, need to split in many parts because of ONNX format limitation
         """
@@ -221,7 +225,7 @@ class StellarPerceptron(StellarPerceptronCore):
         inputs: NDArray,
         inputs_name: NDArray,
         outputs_name: List[str],
-        inputs_err: Optional[NDArray]=None,
+        inputs_err: Optional[NDArray] = None,
         # max number of tokens will be turned to padding during training
         outputs_padding: int = 11,
         batch_size: int = 64,
@@ -231,10 +235,12 @@ class StellarPerceptron(StellarPerceptronCore):
         validation_split: float = 0.1,
         lr_scheduler: torch.optim.lr_scheduler.LRScheduler = torch.optim.lr_scheduler.ReduceLROnPlateau,
         checkpoint_every_n_epochs: int = 0,  # save checkpoint every n epochs, put 0 to disable
-        terminate_on_nan: bool = True
+        terminate_on_nan: bool = True,
     ) -> None:
         # always scale the gradients if using cuda
-        gradient_scaler = torch.GradScaler(device=self.device, enabled=self.device_type == "cuda")
+        gradient_scaler = torch.GradScaler(
+            device=self.device, enabled=self.device_type == "cuda"
+        )
         self.epochs = epochs
         if inputs_err is None:
             inputs_err = np.zeros_like(inputs)
@@ -251,17 +257,19 @@ class StellarPerceptron(StellarPerceptronCore):
         training_log_f.write(f"Batch Size: {batch_size}\n")
         training_log_f.write("====================================\n")
 
-
         training_csv_metrics_f = open(f"{self.root_folder}/training_metrics.csv", "w")
         training_csv_metrics_f.write("time,loss,mse_loss,val_loss,val_mse_loss,lr\n")
 
         system_info_path = f"{self.root_folder}/training_system_info.log"
         # check if the file exists
         if not pathlib.Path(system_info_path).exists():
-            with open(f"{self.root_folder}/training_system_info.log", "w") as system_info_f:
+            with open(
+                f"{self.root_folder}/training_system_info.log", "w"
+            ) as system_info_f:
                 system_info_f.write(
                     subprocess.run(
-                        ["python", "-m", "torch.utils.collect_env"], stdout=subprocess.PIPE
+                        ["python", "-m", "torch.utils.collect_env"],
+                        stdout=subprocess.PIPE,
                     ).stdout.decode("utf-8")
                 )
 
@@ -361,10 +369,7 @@ class StellarPerceptron(StellarPerceptronCore):
                             outputs_logvar[:, :, 0],
                             labels_err=label_err,
                         )
-                        loss_mse = mean_squared_error(
-                            outputs[:, :, 0], 
-                            label
-                            )
+                        loss_mse = mean_squared_error(outputs[:, :, 0], label)
                     gradient_scaler.scale(loss).backward()
                     gradient_scaler.step(self.optimizer)
                     gradient_scaler.update()
@@ -445,7 +450,14 @@ class StellarPerceptron(StellarPerceptronCore):
         training_log_f.close()
         training_csv_metrics_f.close()
 
-    def _perceive_internal(self, inputs, inputs_token, batch_size, return_attention_scores=False, inference_mode=True):
+    def _perceive_internal(
+        self,
+        inputs,
+        inputs_token,
+        batch_size,
+        return_attention_scores=False,
+        inference_mode=True,
+    ):
         self.torch_model.eval()
         with torch.inference_mode(mode=inference_mode):
             inputs_token = torch.as_tensor(
@@ -470,9 +482,24 @@ class StellarPerceptron(StellarPerceptronCore):
             if num_batch == 0:  # if smaller than batch_size, then do all at once
                 perception = self.torch_encoder(input_embedded, mask=padding_mask)
                 if return_attention_scores:
-                    _last_padding_mask = self._last_padding_mask.detach().to("cpu").numpy()
-                    last_attention_scores = self.torch_encoder.last_attention_scores.detach().to("cpu").numpy()
-                    attention_scores = np.where(np.tile(np.atleast_3d(_last_padding_mask), (1, 1, self.context_length)), 0, last_attention_scores[:, : self.context_length, : self.context_length])
+                    _last_padding_mask = (
+                        self._last_padding_mask.detach().to("cpu").numpy()
+                    )
+                    last_attention_scores = (
+                        self.torch_encoder.last_attention_scores.detach()
+                        .to("cpu")
+                        .numpy()
+                    )
+                    attention_scores = np.where(
+                        np.tile(
+                            np.atleast_3d(_last_padding_mask),
+                            (1, 1, self.context_length),
+                        ),
+                        0,
+                        last_attention_scores[
+                            :, : self.context_length, : self.context_length
+                        ],
+                    )
             else:
                 # TODO: need to handle attention score in this case
                 if return_attention_scores:
@@ -509,7 +536,7 @@ class StellarPerceptron(StellarPerceptronCore):
             if return_attention_scores:
                 attention_scores /= np.sum(attention_scores, axis=1, keepdims=True)
             return perception, attention_scores
-        
+
     def _request_internal(
         self, request_tokens, batch_size, return_attention_scores=False
     ):
@@ -557,8 +584,14 @@ class StellarPerceptron(StellarPerceptronCore):
                         np.exp(np.squeeze(_pred_logvar.detach().to("cpu").numpy()))
                     )
                     if return_attention_scores:
-                        _last_padding_mask = self._last_padding_mask.detach().to("cpu").numpy()
-                        last_attention_scores = self.torch_decoder.last_attention_scores.detach().to("cpu").numpy()
+                        _last_padding_mask = (
+                            self._last_padding_mask.detach().to("cpu").numpy()
+                        )
+                        last_attention_scores = (
+                            self.torch_decoder.last_attention_scores.detach()
+                            .to("cpu")
+                            .numpy()
+                        )
                         attention_scores[:, :, idx] = np.where(
                             _last_padding_mask,
                             0,
@@ -586,18 +619,32 @@ class StellarPerceptron(StellarPerceptronCore):
                                     i * batch_size : i * batch_size + batch_size
                                 ],
                             )
-                        pred[
-                            i * batch_size : i * batch_size + batch_size, idx
-                        ] = np.squeeze(_pred.detach().to("cpu").numpy())
-                        pred_err[
-                            i * batch_size : i * batch_size + batch_size, idx
-                        ] = np.sqrt(
-                            np.exp(np.squeeze(_pred_logvar.detach().to("cpu").numpy()))
+                        pred[i * batch_size : i * batch_size + batch_size, idx] = (
+                            np.squeeze(_pred.detach().to("cpu").numpy())
+                        )
+                        pred_err[i * batch_size : i * batch_size + batch_size, idx] = (
+                            np.sqrt(
+                                np.exp(
+                                    np.squeeze(_pred_logvar.detach().to("cpu").numpy())
+                                )
+                            )
                         )
                         if return_attention_scores:
-                            _last_padding_mask = self._last_padding_mask.detach().to("cpu").numpy()
-                            last_attention_scores = self.torch_decoder.last_attention_scores.detach().to("cpu").numpy()
-                            attention_scores[i * batch_size : i * batch_size + batch_size, :, idx] = np.where(_last_padding_mask, 0, last_attention_scores[:, :, : self.context_length],)
+                            _last_padding_mask = (
+                                self._last_padding_mask.detach().to("cpu").numpy()
+                            )
+                            last_attention_scores = (
+                                self.torch_decoder.last_attention_scores.detach()
+                                .to("cpu")
+                                .numpy()
+                            )
+                            attention_scores[
+                                i * batch_size : i * batch_size + batch_size, :, idx
+                            ] = np.where(
+                                _last_padding_mask,
+                                0,
+                                last_attention_scores[:, :, : self.context_length],
+                            )
                 if num_batch_remainder > 0:
                     # do the remainder
                     for idx in range(request_tokens_num):
@@ -616,14 +663,20 @@ class StellarPerceptron(StellarPerceptronCore):
                             np.exp(np.squeeze(_pred_logvar.detach().to("cpu").numpy()))
                         )
                         if return_attention_scores:
-                            _last_padding_mask = self._last_padding_mask.detach().to("cpu").numpy()
-                            last_attention_scores = self.torch_decoder.last_attention_scores.detach().to("cpu").numpy()
-                            attention_scores[
-                                num_batch * batch_size :, :, idx
-                            ] = np.where(
-                                _last_padding_mask,
-                                0,
-                                last_attention_scores[:, :, : self.context_length],
+                            _last_padding_mask = (
+                                self._last_padding_mask.detach().to("cpu").numpy()
+                            )
+                            last_attention_scores = (
+                                self.torch_decoder.last_attention_scores.detach()
+                                .to("cpu")
+                                .numpy()
+                            )
+                            attention_scores[num_batch * batch_size :, :, idx] = (
+                                np.where(
+                                    _last_padding_mask,
+                                    0,
+                                    last_attention_scores[:, :, : self.context_length],
+                                )
                             )
             if return_attention_scores:
                 attention_scores /= np.sum(attention_scores, axis=1, keepdims=True)

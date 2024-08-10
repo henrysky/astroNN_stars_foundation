@@ -166,33 +166,33 @@ def plot_kiel_uncertainty(
         va="top",
     )
     if show_percentiles:
-        teff_err = val_labels_pd['teff'] - pred_df['teff']
+        teff_err = val_labels_pd["teff"] - pred_df["teff"]
         ax1.annotate(
-            f"$16^\mathrm{{th}}$: {np.percentile(teff_err, 16):.2f} K\n" + 
-            f"$50^\mathrm{{th}}$: {np.percentile(teff_err, 50):.2f} K\n" +
-            f"$84^\mathrm{{th}}$: {np.percentile(teff_err, 84):.2f} K",
+            f"$16^\mathrm{{th}}$: {np.percentile(teff_err, 16):.2f} K\n"
+            + f"$50^\mathrm{{th}}$: {np.percentile(teff_err, 50):.2f} K\n"
+            + f"$84^\mathrm{{th}}$: {np.percentile(teff_err, 84):.2f} K",
             xy=(0.95, 0.05),
             xycoords=ax1,
             fontsize=14,
             ha="right",
             va="bottom",
         )
-        logg_err = val_labels_pd['logg'] - pred_df['logg']
+        logg_err = val_labels_pd["logg"] - pred_df["logg"]
         ax2.annotate(
-            f"$16^\mathrm{{th}}$: {np.percentile(logg_err, 16):.2f} dex\n" + 
-            f"$50^\mathrm{{th}}$: {np.percentile(logg_err, 50):.2f} dex\n" +
-            f"$84^\mathrm{{th}}$: {np.percentile(logg_err, 84):.2f} dex",
+            f"$16^\mathrm{{th}}$: {np.percentile(logg_err, 16):.2f} dex\n"
+            + f"$50^\mathrm{{th}}$: {np.percentile(logg_err, 50):.2f} dex\n"
+            + f"$84^\mathrm{{th}}$: {np.percentile(logg_err, 84):.2f} dex",
             xy=(0.95, 0.05),
             xycoords=ax2,
             fontsize=14,
             ha="right",
             va="bottom",
         )
-        m_h_err = val_labels_pd['m_h'] - pred_df['m_h']
+        m_h_err = val_labels_pd["m_h"] - pred_df["m_h"]
         ax3.annotate(
-            f"$16^\mathrm{{th}}$: {np.percentile(m_h_err, 16):.2f} dex\n" + 
-            f"$50^\mathrm{{th}}$: {np.percentile(m_h_err, 50):.2f} dex\n" +
-            f"$84^\mathrm{{th}}$: {np.percentile(m_h_err, 84):.2f} dex",
+            f"$16^\mathrm{{th}}$: {np.percentile(m_h_err, 16):.2f} dex\n"
+            + f"$50^\mathrm{{th}}$: {np.percentile(m_h_err, 50):.2f} dex\n"
+            + f"$84^\mathrm{{th}}$: {np.percentile(m_h_err, 84):.2f} dex",
             xy=(0.95, 0.05),
             xycoords=ax3,
             fontsize=14,
@@ -236,7 +236,9 @@ def setup_xp_physical_plot(
 
     ax.set_xlabel("Wavelength (nm)")
     scale_text = "" if logscale == 0 else f"10^{{{logscale}}} "
-    ax.set_ylabel(f"Flux at 10 pc (${scale_text} \mathrm{{W}} \mathrm{{nm}}^{{{-1}}} \mathrm{{m}}^{{{-2}}}$)")
+    ax.set_ylabel(
+        f"Flux at 10 pc (${scale_text} \mathrm{{W}} \mathrm{{nm}}^{{{-1}}} \mathrm{{m}}^{{{-2}}}$)"
+    )
     ax.set_xlim(392, 992)
 
     if lines_list:

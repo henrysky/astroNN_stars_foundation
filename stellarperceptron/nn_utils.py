@@ -35,12 +35,12 @@ class TrainingGenerator(torch.utils.data.Dataset):
         self,
         batch_size: int,
         data: dict,
-        outputs_padding: int=0,
-        possible_output_tokens: List[int]=None,
-        input_length: int=None,
-        shuffle: bool=True,
-        aggregate_nans: bool=True,
-        factory_kwargs: dict={"device": "cpu", "dtype": torch.float32},
+        outputs_padding: int = 0,
+        possible_output_tokens: List[int] = None,
+        input_length: int = None,
+        shuffle: bool = True,
+        aggregate_nans: bool = True,
+        factory_kwargs: dict = {"device": "cpu", "dtype": torch.float32},
     ):
         """
         Parameters
@@ -93,9 +93,9 @@ class TrainingGenerator(torch.utils.data.Dataset):
         else:
             self.first_n_shuffle = None
 
-        prob_matrix[
-            bad_idx
-        ] = 0.0  # don't sample those token which are missing (i.e. padding)
+        prob_matrix[bad_idx] = (
+            0.0  # don't sample those token which are missing (i.e. padding)
+        )
         self.output_prob_matrix = prob_matrix
 
         self.batch_size = batch_size

@@ -70,7 +70,7 @@ def gaia_plx_zero_point(
     pseudocolour,
     ect_lat,
     astrometric_params_solved,
-    leung2023_correction: bool=True,
+    leung2023_correction: bool = True,
 ) -> NDArray[np.float64]:
     parallax_zp = zpt.get_zpt(
         phot_g_mean_mag,
@@ -216,7 +216,9 @@ def xp_coeffs_phys(bprp_coeffs: dict) -> NDArray[np.float64]:
     )
 
 
-def nn_xp_coeffs_phys(nn_model: StellarPerceptron, return_df: bool=False, **kwargs) -> NDArray[np.float64]:
+def nn_xp_coeffs_phys(
+    nn_model: StellarPerceptron, return_df: bool = False, **kwargs
+) -> NDArray[np.float64]:
     """
     Get physical spectra with NN model
     """
