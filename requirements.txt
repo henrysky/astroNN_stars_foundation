@@ -17,4 +17,5 @@ xgboost
 astroNN
 GaiaXPy>=2.1
 gaiadr3_zeropoint
+extinction
 MyGaiaDB

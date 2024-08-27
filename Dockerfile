@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1
-FROM nvcr.io/nvidia/pytorch:24.06-py3
+FROM nvcr.io/nvidia/pytorch:24.08-py3
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt update
 
