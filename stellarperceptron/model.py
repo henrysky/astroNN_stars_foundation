@@ -66,6 +66,10 @@ class StellarPerceptron(StellarPerceptronCore):
         self.dtype = dtype
         if "cuda" in self.device:
             self.device_type = "cuda"
+        if (
+            "mps" in self.device
+        ):  # autocast is not well-supported on mps, so set to CPU for now
+            self.device_type = "cpu"
         else:
             self.device_type = device
 

@@ -57,7 +57,7 @@ Python dependencies are also listed in `requirements.txt`_.
 
 ..
 
-    ⚠️ Using ``mps`` backend of ``PyTorch`` on Apple device is known to yield incorrect results. Please use ``cuda`` or ``cpu`` as backend.
+    ⚠️ Using ``mps`` backend of ``PyTorch<=2.4.0`` on Apple devices is known to yield incorrect results. Please upgrade to ``PyTorch>=2.4.1`` or use ``cpu`` as the backend.
 
 
 .. _configuration file: https://astronn.readthedocs.io/en/latest/quick_start.html#configuration-file
