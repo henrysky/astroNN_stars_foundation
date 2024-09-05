@@ -250,7 +250,7 @@ Plot XP spectrum from stellar parameters
 
     plt.plot(xp_sampling_grid, spectrum)
     plt.xlabel("Wavelength (nm)")
-    plt.ylabel("Flux at 10 pc ($ \mathrm{W} \mathrm{nm}^{-1} \mathrm{m}^{-2}$)")
+    plt.ylabel("Flux at 10 pc ($ \\mathrm{W} \\mathrm{nm}^{-1} \\mathrm{m}^{-2}$)")
     plt.xlim(392, 992)
     plt.show()
 

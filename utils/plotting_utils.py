@@ -68,8 +68,8 @@ def plot_kiel_uncertainty(
     ax1.set_xlim(3000, 7000)
     ax1.set_ylim(3000, 7000)
     ax1.set_yticklabels([])
-    ax1.set_xlabel("APOGEE $T_\mathrm{eff}$ (K)")
-    ax1.set_ylabel("NN $T_\mathrm{eff}$ (K)")
+    ax1.set_xlabel("APOGEE $T_\\mathrm{eff}$ (K)")
+    ax1.set_ylabel("NN $T_\\mathrm{eff}$ (K)")
     ax1.set_aspect("equal", "box")
     ax1.annotate(
         f"$\\sigma=${mad_std(val_labels_pd['teff'] - pred_df['teff'], ignore_nan=True):.2f} K",
@@ -83,7 +83,7 @@ def plot_kiel_uncertainty(
         if density:
             top_cbar(ax1, mappable, "log$_{10}$ N", labelpad=10)
         else:
-            top_cbar(ax1, mappable, "$\sigma_\mathrm{model}$ (K)", labelpad=10)
+            top_cbar(ax1, mappable, "$\\sigma_\\mathrm{model}$ (K)", labelpad=10)
 
     if density:
         mappable = ax2.hexbin(
@@ -111,8 +111,8 @@ def plot_kiel_uncertainty(
     ax2.set_xlim(0.0, 5.0)
     ax2.set_ylim(0.0, 5.0)
     ax2.set_yticklabels([])
-    ax2.set_xlabel("APOGEE $\log{g}$ (dex)")
-    ax2.set_ylabel("NN $\log{g}$ (dex)")
+    ax2.set_xlabel("APOGEE $\\log{g}$ (dex)")
+    ax2.set_ylabel("NN $\\log{g}$ (dex)")
     ax2.set_aspect("equal", "box")
     ax2.annotate(
         f"$\\sigma=${mad_std(val_labels_pd['logg'] - pred_df['logg'], ignore_nan=True):.2f} dex",
@@ -126,7 +126,7 @@ def plot_kiel_uncertainty(
         if density:
             top_cbar(ax2, mappable, "log$_{10}$ N", labelpad=10)
         else:
-            top_cbar(ax2, mappable, "$\sigma_\mathrm{model}$ (dex)", labelpad=10)
+            top_cbar(ax2, mappable, "$\\sigma_\\mathrm{model}$ (dex)", labelpad=10)
 
     if density:
         mappable = ax3.hexbin(
@@ -168,9 +168,9 @@ def plot_kiel_uncertainty(
     if show_percentiles:
         teff_err = val_labels_pd["teff"] - pred_df["teff"]
         ax1.annotate(
-            f"$16^\mathrm{{th}}$: {np.percentile(teff_err, 16):.2f} K\n"
-            + f"$50^\mathrm{{th}}$: {np.percentile(teff_err, 50):.2f} K\n"
-            + f"$84^\mathrm{{th}}$: {np.percentile(teff_err, 84):.2f} K",
+            f"$16^\\mathrm{{th}}$: {np.percentile(teff_err, 16):.2f} K\n"
+            + f"$50^\\mathrm{{th}}$: {np.percentile(teff_err, 50):.2f} K\n"
+            + f"$84^\\mathrm{{th}}$: {np.percentile(teff_err, 84):.2f} K",
             xy=(0.95, 0.05),
             xycoords=ax1,
             fontsize=14,
@@ -179,9 +179,9 @@ def plot_kiel_uncertainty(
         )
         logg_err = val_labels_pd["logg"] - pred_df["logg"]
         ax2.annotate(
-            f"$16^\mathrm{{th}}$: {np.percentile(logg_err, 16):.2f} dex\n"
-            + f"$50^\mathrm{{th}}$: {np.percentile(logg_err, 50):.2f} dex\n"
-            + f"$84^\mathrm{{th}}$: {np.percentile(logg_err, 84):.2f} dex",
+            f"$16^\\mathrm{{th}}$: {np.percentile(logg_err, 16):.2f} dex\n"
+            + f"$50^\\mathrm{{th}}$: {np.percentile(logg_err, 50):.2f} dex\n"
+            + f"$84^\\mathrm{{th}}$: {np.percentile(logg_err, 84):.2f} dex",
             xy=(0.95, 0.05),
             xycoords=ax2,
             fontsize=14,
@@ -190,9 +190,9 @@ def plot_kiel_uncertainty(
         )
         m_h_err = val_labels_pd["m_h"] - pred_df["m_h"]
         ax3.annotate(
-            f"$16^\mathrm{{th}}$: {np.percentile(m_h_err, 16):.2f} dex\n"
-            + f"$50^\mathrm{{th}}$: {np.percentile(m_h_err, 50):.2f} dex\n"
-            + f"$84^\mathrm{{th}}$: {np.percentile(m_h_err, 84):.2f} dex",
+            f"$16^\\mathrm{{th}}$: {np.percentile(m_h_err, 16):.2f} dex\n"
+            + f"$50^\\mathrm{{th}}$: {np.percentile(m_h_err, 50):.2f} dex\n"
+            + f"$84^\\mathrm{{th}}$: {np.percentile(m_h_err, 84):.2f} dex",
             xy=(0.95, 0.05),
             xycoords=ax3,
             fontsize=14,
@@ -203,7 +203,7 @@ def plot_kiel_uncertainty(
         if density:
             top_cbar(ax3, mappable, "log$_{10}$ N", labelpad=10)
         else:
-            top_cbar(ax3, mappable, "$\sigma_\mathrm{model}$ (dex)", labelpad=10)
+            top_cbar(ax3, mappable, "$\\sigma_\\mathrm{model}$ (dex)", labelpad=10)
 
     if suptitle is not None:
         fig.suptitle(suptitle, x=0.04, y=1.05, ha="left")
@@ -237,7 +237,7 @@ def setup_xp_physical_plot(
     ax.set_xlabel("Wavelength (nm)")
     scale_text = "" if logscale == 0 else f"10^{{{logscale}}} "
     ax.set_ylabel(
-        f"Flux at 10 pc (${scale_text} \mathrm{{W}} \mathrm{{nm}}^{{{-1}}} \mathrm{{m}}^{{{-2}}}$)"
+        f"Flux at 10 pc (${scale_text} \\mathrm{{W}} \\mathrm{{nm}}^{{{-1}}} \\mathrm{{m}}^{{{-2}}}$)"
     )
     ax.set_xlim(392, 992)
 
